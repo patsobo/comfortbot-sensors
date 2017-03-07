@@ -20,11 +20,10 @@ while True:
 	result = ljm.eReadName(handle, name)
 
 	# voltage range of output
-	humidity = (100*result)/4.915
+	resistance = float((100*result)/(4.915 - result))
+	rad_temp = 100*(resistance - 100) / 38.51
 
-	print("%s Humidity: %f %%" % (name, humidity))
-	# slow down readings
-	time.sleep(100);
+	print("%s: %f degrees Celsius" % (name, rad_temp))
 
 # Close handle
 ljm.close(handle)
