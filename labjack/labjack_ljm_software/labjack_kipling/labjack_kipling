@@ -1,0 +1,5 @@
+#!/bin/sh
+exec /opt/labjack_kipling/Kipling "$@" \
+	> /tmp/labjack_kipling.out \
+	2>&1 \
+	&

@@ -1,0 +1,40 @@
+LJM Examples
+
+Directory Structure
+
+examples
+    Contains examples showing the LJM Easy functions for performing
+    device operations.
+
+    ain
+        Contains examples showing how to perform analog input readings and
+        configurations.
+
+    config
+        Contains examples showing how to read and write device configurations,
+        including device name and power configurations.
+
+    dio
+        Contains examples showing how to read and write digital IOs.
+
+    ethernet
+        Contains examples showing how to read and write Ethernet configurations.
+
+    testing
+        Contains a LJM_eNames speed test.
+
+    utilities
+        Contains many useful programs, including a T7 TCP configurer, device
+        info dislayer, a stream example, and demonstrations of functions such
+        as LJM_ListAll, LJM_WriteRaw/LJM_ReadRaw, LJM_NamesToAddresses,
+        LJM_ErrorToString, and the LJM library config functions.
+
+    visual_studio_2008
+        Contains a .sln and a .vcproj file for each example program.
+
+    watchdog
+        Contains examples showing how to read and write watchdog configurations.
+
+    wifi
+        Contains examples showing how to read and write WiFi configurations and
+        properties.

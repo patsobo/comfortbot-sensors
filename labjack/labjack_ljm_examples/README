@@ -1,0 +1,126 @@
+====================
+  LabJackM Library
+====================
+
+The LabJackM Library handles USB and TCP communications to LabJack devices.
+
+
+Currently Supported Devices
+---------------------------
+T7, Digit-TL
+
+For firmware updates, visit:
+https://labjack.com/support/firmware/
+
+
+Note: The LabJackM library interfaces with many other programming languages,
+such as Python or LabVIEW. For more information, please visit:
+https://labjack.com/support/ljm/
+
+
+================
+  Requirements
+================
+
+
+Mac OS X Requirements
+---------------------
+1. The Xcode developer tools
+
+2. Mac OS X 10.5 Leopard or greater. We haven't tested the library
+on 10.4 Tiger, but feel free to try and let us know if it works at
+labjacksupport@gmail.com.
+
+
+Linux Requirements
+------------------
+1. libusb-1.0 library or greater version.
+
+2. A Linux distribution that works similar to Ubuntu. Generally, this
+shouldn't be a problem, but let us know if LabJackM has trouble installing
+or running on the Linux distribution that you use. We'd be happy to support
+different distributions.
+
+
+==============================
+  Mac OS X and Linux Install
+==============================
+
+LabJackM is installed to /usr/local/lib.
+
+The header file, LabJackM.h, is installed to /usr/local/include.
+
+The constants files are installed to /usr/local/share/LabJack/LJM.
+
+
+Mac OS X Install
+----------------
+liblabjackusb and libusb-1.0 are both installed to /usr/local/lib. If you
+already have current versions and do not wish to re-install, choose Customize
+during the Installation Type step and unselect them.
+
+
+Linux Install
+-------------
+liblabjackusb is installed to /usr/local/lib.
+
+
+================
+  Usage
+================
+
+1. You need to include the LabJackM.h header file in your code.
+For example:
+  #include "LabJackM.h"
+
+2. You need to include LabJackM as a library during compile time, using the -l
+flag. For example:
+  $ gcc foo.c -lLabJackM
+
+Error codes and useful constants are included in LabJackM.h
+
+
+Compiling and Running the Example Programs
+------------------------------------------
+To compile the example programs go to your LabJackM directory and run
+    $ cd examples/
+    $ ./make.sh
+
+make.sh uses a Python program called Scons to compile, so make sure
+Python is installed and up to date on your machine. Scons has been included
+in LabJackM/scons-local-2.1.0/. For more information, please visit
+http://www.scons.org/.
+
+Run one of example programs like this:
+    $ ./device_info
+
+
+===================
+  Troubleshooting
+===================
+
+
+Linux
+-----
+If compiling with -lLabJackM complains about undefined references to `std::`
+references, you may have an old version of gcc, such as gcc version 4.4. You
+may need to update gcc to version 4.6, as you can via the following:
+
+Add https://launchpad.net/~ubuntu-toolchain-r/+archive/test to your repositories
+by running:
+
+    $ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+
+Then, update apt-get, install gcc-4.6, and map gcc to the version you just
+installed. For example:
+
+    $ sudo apt-get update
+    $ sudo apt-get install gcc-4.6
+    $ sudo apt-get install g++-4.6
+    $ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 20
+    $ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.6 20
+    $ sudo update-alternatives --config gcc
+    $ sudo update-alternatives --config g++
+
+More more information, see this post on superuser.com:
+http://superuser.com/questions/310809/how-can-i-update-gcc-to-the-latest-version-in-ubuntu-10-04
