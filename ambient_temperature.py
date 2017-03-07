@@ -6,6 +6,11 @@ Demonstrates reading a single analog input (AIN) from a LabJack.
 from labjack import ljm
 import time
 
+# constants (for ambient)
+R1 = 3000
+Vs = 4.915
+STD_TEMP = 25 # in C
+
 # Open first found LabJack
 handle = ljm.open(ljm.constants.dtANY, ljm.constants.ctANY, "ANY")
 #handle = ljm.openS("ANY", "ANY", "ANY")
@@ -18,14 +23,14 @@ print("Opened a LabJack with Device type: %i, Connection type: %i,\n" \
 while True:
 	# Setup and call eReadName to read from a AIN on the LabJack.
 	name = "AIN0"
-	result = ljm.eReadName(handle, name)
+	analog_voltage = ljm.eReadName(handle, name)
 
 	# voltage range of output
-	humidity = (100*result)/4.915
+	Ro = float((R1*analog_voltage)/(Vs - analog_voltage))
+	amb_temp = R1 / Ro * 25 #R1*(Ro - R1) / STD_TEMP 
 
-	print("%s Humidity: %f %%" % (name, humidity))
-	# slow down readings
-	#time.sleep(100);
+	print("%s: %f degrees Celsius" % (name, amb_temp))
+	time.sleep(.1)
 
 # Close handle
 ljm.close(handle)

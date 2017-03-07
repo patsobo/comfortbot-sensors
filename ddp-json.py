@@ -219,7 +219,6 @@ class App(Cmd):
         except ValueError:
             log('Error parsing parameter list - try `help call`')
             return
-        print "method", method_name
         self.ddpclient.send({
             "msg": "method",
             "method": method_name,
@@ -297,20 +296,20 @@ def main():
     # meteor
     #ddp_endpoint = "162.243.45.179"
     command = "updateStory [\"testing sending json directly\"]"
-    print "command", command
+    print "command", type(command), command
     method_name, params = parse_command(command)
-    print "method_name", method_name
-    print "params", params
+    print "method_name", type(method_name), method_name
+    print "params", type(params), params
     ddpclient = DDPClient(
         'ws://' + args.ddp_endpoint + '/websocket',
         args.print_raw)
     ddpclient.connect()
-    time.sleep(1)
+    time.sleep(2)
     ddpclient.send({
         "msg": "method",
         "method": method_name,
         "params": params,
-        "id": 0
+        "id": "1"
     })
 
 #    app = App(args.ddp_endpoint, args.print_raw)

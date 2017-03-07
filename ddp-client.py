@@ -219,14 +219,14 @@ class App(Cmd):
 
     def do_call(self, params):
         """The `call` command"""
-        print "params before", type(params)
+        print "params before", type(params), params
         try:
             method_name, params = parse_command(params)
         except ValueError:
             log('Error parsing parameter list - try `help call`')
             return
-        print "params after", type(params)
-        print "method", type(method_name)
+        print "params after", type(params), params
+        print "method", type(method_name), method_name
         self.ddpclient.send({
             "msg": "method",
             "method": method_name,
