@@ -295,7 +295,8 @@ def main():
     # This is the websocket client that will actually talk with
     # meteor
     #ddp_endpoint = "162.243.45.179"
-    command = "updateStory [\"testing sending json directly\"]"
+    room_json = "[{\"name\": \"BBW280\", \"dim\": \"DIM\", \"points\":\"POINTS\"}]"
+    command = "insertRoom " + room_json #[\"testing sending json directly\"]"
     print "command", type(command), command
     method_name, params = parse_command(command)
     print "method_name", type(method_name), method_name

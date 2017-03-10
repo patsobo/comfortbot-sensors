@@ -1,5 +1,25 @@
 import random
 import time
+
+import json
+import time
+import argparse
+import thread
+import threading
+import traceback
+
+from ws4py.client.threadedclient import WebSocketClient
+from cmd import Cmd
+
+
+def parse_command(params):
+    """Parses a command with a first string param and a second
+    json-encoded param"""
+    name, args = (params + ' ').split(' ', 1)
+    return name, args and json.loads(args) or []
+
+
+
 Matrix = [[0,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,1,1,0],
           [0,1,0,0,0,0,0,1,1,0],[0,1,0,0,0,0,0,1,1,0],[0,1,0,0,0,0,0,0,0,0],
           [0,1,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0],
@@ -38,19 +58,15 @@ for p in range (0, len(loc)):
 
 #print velocity
 for q in range (0, len(loc)):
-    command = "updateStory [{'loc':loc[q],'temp':temp[q],'radtemp':radtemp[q],'humid':humid[q],'velocity':velocity[q]}"
-        print "command", type(command), command
-        method_name, params = parse_command(command)
-        print "method_name", type(method_name), method_name
-        print "params", type(params), params
-        ddpclient = DDPClient(
-            'ws://' + args.ddp_endpoint + '/websocket',
-            args.print_raw)
-        ddpclient.connect()
-        time.sleep(2)
-        ddpclient.send({
-            "msg": "method",
-            "method": method_name,
-            "params": params,
-            "id": "1"
-        })
+    command = "insertMap [{'loc':loc[q],'temp':temp[q],'radtemp':radtemp[q],'humid':humid[q],'velocity':velocity[q]}"
+    method_name, params = parse_command(command)
+    ddpclient = DDPClient(
+    	'ws://' + "localhost:3000" + '/websocket',
+    	args.print_raw)
+    ddpclient.connect()
+    ddpclient.send({
+    	"msg": "method",
+    	"method": method_name,
+    	"params": params,
+    	"id": "1"
+    })
