@@ -293,20 +293,46 @@ def main():
         help='print raw websocket data in addition to parsed results')
     args = parser.parse_args()
 
-    # This is the websocket client that will actually talk with
-    # meteor
-    #ddp_endpoint = "162.243.45.179"
-    room_json = "[{\"name\": \"BBW280\", \"dim\": \"DIM\", \"points\":\"POINTS\"}]"
-    command = "insertRoom " + room_json #[\"testing sending json directly\"]"
-    print "command", type(command), command
-    method_name, params = parse_command(command)
-    print "method_name", type(method_name), method_name
-    print "params", type(params), params
     ddpclient = DDPClient(
         'ws://' + args.ddp_endpoint + '/websocket',
         args.print_raw)
     ddpclient.connect()
+ 
+    # clear data
+    ddpclient.send({
+        "msg": "method",
+        "method": "deleteData",
+        "params": [],
+        "id": "1"
+    })
+	
+    # This is the websocket client that will actually talk with
+    # meteor
+    #ddp_endpoint = "162.243.45.179"
+    room_json = "[{\"name\": \"BBW280\"}]"
+    command = "insertRoom " + room_json #[\"testing sending json directly\"]"
+    method_name, params = parse_command(command)
+    
+    # send BBW280 info
+    ddpclient.send({
+        "msg": "method",
+        "method": method_name,
+        "params": params,
+        "id": "1"
+    })
+    
+    mz_json = "[{\"name\": \"MZ335\", \"dim\": \"DIM\", \"points\":\"POINTS\"}]"
+    command = "insertRoom " + mz_json #[\"testing sending json directly\"]"
+    method_name, params = parse_command(command)
 
+    # send MZ335 info
+    ddpclient.send({
+        "msg": "method",
+        "method": method_name,
+        "params": params,
+        "id": "1"
+    })
+    
 ######## GENERATING FAKE ROOM DATA
 
     Matrix = [[0,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,1,1,0],

@@ -277,6 +277,15 @@ class App(Cmd):
         self.unique_id = self.unique_id + 1
         return str(self.unique_id)
 
+def send_command(command, parameters, ddpclient):
+    command = command + " " + parameters
+    method_name, params = parse_command(command)
+    ddpclient.send({
+        "msg": "method",
+        "method": method_name,
+        "params": params,
+        "id": "1"
+    })
 
 def main():
     """Parse the command line arguments and create a new App instance"""
@@ -291,26 +300,31 @@ def main():
         help='print raw websocket data in addition to parsed results')
     args = parser.parse_args()
 
-    # This is the websocket client that will actually talk with
-    # meteor
-    #ddp_endpoint = "162.243.45.179"
-    room_json = "[{\"name\": \"BBW280\", \"dim\": \"DIM\", \"points\":\"POINTS\"}]"
-    command = "insertRoom " + room_json #[\"testing sending json directly\"]"
-    print "command", type(command), command
-    method_name, params = parse_command(command)
-    print "method_name", type(method_name), method_name
-    print "params", type(params), params
     ddpclient = DDPClient(
         'ws://' + args.ddp_endpoint + '/websocket',
         args.print_raw)
     ddpclient.connect()
-    time.sleep(2)
-    ddpclient.send({
-        "msg": "method",
-        "method": method_name,
-        "params": params,
-        "id": "1"
-    })
+
+    # This is the websocket client that will actually talk with
+    # meteor
+    #ddp_endpoint = "162.243.45.179"
+#    room_json = "[{\"name\": \"BBW280\"}]"
+#    command = "insertRoom " + room_json #[\"testing sending json directly\"]"
+#    print "command", type(command), command
+#    method_name, params = parse_command(command)
+#    print "method_name", type(method_name), method_name
+#    print "params", type(params), params
+#    ddpclient.send({
+#        "msg": "method",
+#        "method": method_name,
+#        "params": params,
+#        "id": "1"
+#    })
+   
+    #send_command("deleteData", "[]", ddpclient)
+    send_command("insertRoom", "[{\"name\": \"BBW280\"}]", ddpclient)
+    send_command("insertRoom", "[{\"name\": \"MZ335\"}]", ddpclient)
+    send_command("insertTest", "[]", ddpclient)
 
 #    app = App(args.ddp_endpoint, args.print_raw)
 #    try:
