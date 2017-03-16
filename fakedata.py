@@ -299,12 +299,12 @@ def main():
     ddpclient.connect()
  
     # clear data
-    ddpclient.send({
-        "msg": "method",
-        "method": "deleteData",
-        "params": [],
-        "id": "1"
-    })
+#    ddpclient.send({
+#        "msg": "method",
+#        "method": "deleteData",
+#        "params": [],
+#        "id": "1"
+#    })
 	
     # This is the websocket client that will actually talk with
     # meteor
