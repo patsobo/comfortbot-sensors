@@ -299,12 +299,12 @@ def main():
     ddpclient.connect()
  
     # clear data
-    ddpclient.send({
-        "msg": "method",
-        "method": "deleteData",
-        "params": [],
-        "id": "1"
-    })
+#    ddpclient.send({
+#        "msg": "method",
+#        "method": "deleteData",
+#        "params": [],
+#        "id": "1"
+#    })
 	
     # This is the websocket client that will actually talk with
     # meteor
@@ -320,19 +320,19 @@ def main():
         "params": params,
         "id": "1"
     })
-    
-    mz_json = "[{\"name\": \"MZ335\", \"dim\": \"DIM\", \"points\":\"POINTS\"}]"
-    command = "insertRoom " + mz_json #[\"testing sending json directly\"]"
-    method_name, params = parse_command(command)
 
-    # send MZ335 info
-    ddpclient.send({
-        "msg": "method",
-        "method": method_name,
-        "params": params,
-        "id": "1"
-    })
-    
+#    mz_json = "[{\"name\": \"MZ335\", \"dim\": \"DIM\", \"points\":\"POINTS\"}]"
+#    command = "insertRoom " + mz_json #[\"testing sending json directly\"]"
+#    method_name, params = parse_command(command)
+#
+#    # send MZ335 info
+#    ddpclient.send({
+#        "msg": "method",
+#        "method": method_name,
+#        "params": params,
+#        "id": "1"
+#    })
+
 ######## GENERATING FAKE ROOM DATA
 
     Matrix = [[0,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,1,1,0],

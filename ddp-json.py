@@ -321,7 +321,7 @@ def main():
 #        "id": "1"
 #    })
    
-    #send_command("deleteData", "[]", ddpclient)
+    send_command("deleteData", "[]", ddpclient)
     send_command("insertRoom", "[{\"name\": \"BBW280\"}]", ddpclient)
     send_command("insertRoom", "[{\"name\": \"MZ335\"}]", ddpclient)
     send_command("insertTest", "[]", ddpclient)
