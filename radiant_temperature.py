@@ -1,5 +1,5 @@
 """
-Demonstrates reading a single analog input (AIN) from a LabJack.
+Reading all sensors voltage, convert value, send to DB
 
 """
 
@@ -31,6 +31,25 @@ print("Opened a LabJack with Device type: %i, Connection type: %i,\n" \
     "Serial number: %i, IP address: %s, Port: %i,\nMax bytes per MB: %i" % \
     (info[0], info[1], info[2], ljm.numberToIP(info[3]), info[4], info[5]))
 
+# This is the websocket client that will actually talk with
+# meteor
+#ddp_endpoint = "162.243.45.179"
+room_json = "[{\"name\": \"BBW281\"}]"
+command = "insertRoom " + room_json #[\"testing sending json directly\"]"
+method_name, params = parse_command(command)
+
+# send BBW280 info
+ddpclient.send({
+        "msg": "method",
+        "method": method_name,
+        "params": params,
+        "id": "1"
+})
+
+#fake incremental location
+x=0
+y=0
+
 while True:
 	# Setup and call eReadName to read from a AIN on the LabJack.
 	# 0=radiant, 1=humidity, 2=ambient, 3=4=anemometers
@@ -58,7 +77,7 @@ while True:
 
 	# 2  ambient temp voltage range of output
 	Ro = float((R1*result2)/(Vs - result2))
-	amb_temp = R1 / Ro * 25 #R1*(Ro - R1) / STD_TEMP
+	amb_temp = R1 / Ro * STD_TEMP
 	ambientList.append(amb_temp)
 	print("%s Ambient temp:	%f deg C " % (name2, amb_temp))
 
@@ -99,7 +118,25 @@ while True:
 		time.sleep(5)
 		
 	#to-do: send avg values to DB
-
+        command = "insertData [\"BBW281\", {\"x\":" + str(x) \
+                  + ", \"y\":" + str(y) + ",\"temp\":" + \
+                  str(ambAvg) + ",\"radtemp\":" + str(radAvg) + \
+                  ",\"humid\":" + str(hudAvg) + ",\"velocity\":" + str(aneMagAvg) + "}]"
+        
+        #will need to use real data eventually, right now we increment fake loc
+        x=x+1
+        y=y+1
+        
+        #command = "insertData [{\"loc\":\"loc[q]\",\"temp\":\"temp[q]\",\"radtemp\":\"radtemp[q]\",\"humid\":\"humid[q]\",\"velocity\":\"velocity[q]\"}]"
+        print command
+        method_name, params = parse_command(command)
+ 
+        ddpclient.send({
+            "msg": "method",
+            "method": method_name,
+            "params": params,
+            "id": "1"
+        })
 	#reset lists and iterator
 		radiantList=[]
 		humidityList=[]
@@ -107,6 +144,7 @@ while True:
 		anemo1List=[]
 		anemo2List=[]
 		iterator=0
+            
 
 # Close handle
 ljm.close(handle)
