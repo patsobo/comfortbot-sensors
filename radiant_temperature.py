@@ -78,8 +78,9 @@ while True:
 	print(iterator)
 	print("--------------------------------")
 
-	# slow down readings (readings per second)
-	time.sleep(1);
+	# slow down readings
+	time.sleep(0.5);
+
 
 	if iterator >=20:
 	#avg the values
