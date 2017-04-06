@@ -33,15 +33,16 @@ print("Opened a LabJack with Device type: %i, Connection type: %i,\n" \
 
 while True:
 	# Setup and call eReadName to read from a AIN on the LabJack.
+	# 0=radiant, 1=humidity, 2=ambient, 3=4=anemometers
 	name0 = "AIN12"
-	result0 = ljm.eReadName(handle, name0)
 	name1 = "AIN1"
-	result1 = ljm.eReadName(handle, name1)
 	name2 = "AIN13"
-	result2 = ljm.eReadName(handle, name2)
 	name3 = "AIN2"
-	result3 = ljm.eReadName(handle, name3)
 	name4 = "AIN3"
+	result0 = ljm.eReadName(handle, name0)
+	result1 = ljm.eReadName(handle, name1)
+	result2 = ljm.eReadName(handle, name2)
+	result3 = ljm.eReadName(handle, name3)
 	result4 = ljm.eReadName(handle, name4)
 
 	# 0  radiant temp voltage range of output
@@ -77,7 +78,7 @@ while True:
 	print(iterator)
 	print("--------------------------------")
 
-	# slow down readings
+	# slow down readings (readings per second)
 	time.sleep(1);
 
 	if iterator >=20:
