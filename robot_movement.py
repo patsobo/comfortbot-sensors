@@ -60,16 +60,16 @@ if __name__ == '__main__':
         navigator = GoToPose()
 
         # Customize the following values so they are appropriate for your location
-        position = {'x': xx/10, 'y' : yy/10}
+        position = {'x': xgoal, 'y' : ygoal}
         quaternion = {'r1' : 0.000, 'r2' : 0.000, 'r3' : 0.000, 'r4' : 1.000}
 
         rospy.loginfo("Go to (%s, %s) pose", position['x'], position['y'])
         success = navigator.goto(position, quaternion)
 
         if success:
-            rospy.loginfo("Hooray, reached the desired pose")
+            rospy.loginfo("Success")
         else:
-            rospy.loginfo("The base failed to reach the desired pose")
+            rospy.loginfo("Fail")
 
         # Sleep to give the last log messages time to be sent
         rospy.sleep(1)
