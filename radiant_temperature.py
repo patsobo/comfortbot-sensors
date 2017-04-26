@@ -190,101 +190,6 @@ class DDPClient(WebSocketClient):
             thread.interrupt_main()
 
 
-class App(Cmd):
-    """Main input loop."""
-
-    def __init__(self, ddp_endpoint, print_raw):
-        Cmd.__init__(self)
-
-        # Should we print the raw websocket messages in addition to
-        # parsing them?
-        self.print_raw = print_raw
-
-        # This is the websocket client that will actually talk with
-        # meteor
-        self.ddpclient = DDPClient(
-            'ws://' + ddp_endpoint + '/websocket',
-            self.print_raw)
-        self.ddpclient.connect()
-
-        # Showing a fancy prompt string if we're interactive
-        if sys.stdin.isatty():
-            self.prompt = ddp_endpoint + '> '
-        else:
-            self.prompt = ''
-
-        # Initializing the message id counter that will be incremented
-        # by the `next_id() method
-        self.unique_id = 0
-
-    def do_call(self, params):
-        """The `call` command"""
-        try:
-            method_name, params = parse_command(params)
-        except ValueError:
-            log('Error parsing parameter list - try `help call`')
-            return
-        self.ddpclient.send({
-            "msg": "method",
-            "method": method_name,
-            "params": params,
-            "id": self.next_id(),
-        })
-
-    def do_sub(self, params):
-        """The `sub` command"""
-        try:
-            sub_name, params = parse_command(params)
-        except ValueError:
-            log('Error parsing parameter list - try `help sub`')
-            return
-        self.ddpclient.send({
-            "msg": "sub",
-            "name": sub_name,
-            "params": params,
-            "id": self.next_id(),
-        })
-
-    def do_EOF(self, line):
-        """The `EOF` "command"
-        It's here to support `cat file | python ddpclient.py`
-        """
-        return True
-
-    def do_help(self, line):
-        """The `help` command"""
-
-        msgs = {
-            'call': (
-                'call <method name> <json array of parameters>\n'
-                '  Calls a remote method\n'
-                '  Example: call vote ["foo.meteor.com"]'),
-            'sub': (
-                'sub <subscription name> [<json array of parameters>]\n'
-                '  Subscribes to a remote dataset\n'
-                '  Examples: `sub allApps` or `sub myApp '
-                '["foo.meteor.com"]`'),
-        }
-
-        line = line.strip()
-        if line and line in msgs:
-            return log('\n' + msgs[line])
-
-        for msg in msgs.values():
-            log('\n' + msg)
-
-    def emptyline(self):
-        """Disable the default Cmd empty line behavior"""
-        pass
-
-    def next_id(self):
-        """Calculates the next id for messages that will be sent to the
-        server"""
-        self.unique_id = self.unique_id + 1
-        return str(self.unique_id)
-
-#ADD MAIN???
-
 """Parse the command line arguments and create a new App instance"""
 parser = argparse.ArgumentParser(
     description='A command-line tool for communicating with a DDP server.')
@@ -316,10 +221,10 @@ unique_id = 0
 
 # send BBW280 info
 ddpclient.send({
-        "msg": "method",
-        "method": method_name,
-        "params": params,
-        "id": str(unique_id)
+    "msg": "method",
+    "method": method_name,
+    "params": params,
+    "id": str(unique_id)
 })
 unique_id += 1
 
@@ -330,14 +235,12 @@ room_json = "[{\"name\": \"BBW281\", \"x\": " + str(xDim) + ", \"y\": " + str(yD
 command = "insertRoom " + room_json #[\"testing sending json directly\"]"
 method_name, params = parse_command(command)
 
-unique_id = 1
-
 # send BBW280 info
 ddpclient.send({
-        "msg": "method",
-        "method": method_name,
-        "params": params,
-        "id": str(unique_id)
+    "msg": "method",
+    "method": method_name,
+    "params": params,
+    "id": str(unique_id)
 })
 unique_id += 1
 
@@ -422,7 +325,7 @@ while True:
     # slow down readings
     time.sleep(0.5);
 
-    if iterator >=20:
+    if iterator >= 20:
 
         #avg the values
         radAvg=sum(radiantList)/len(radiantList)
@@ -440,7 +343,13 @@ while True:
         time.sleep(5)
         
         #to-do: send avg values to DB
-        command = "insertData [\"BBW281\", {\"x\":" + str(x) + ", \"y\":" + str(y) + ",\"temp\":" + str(ambAvg) + ",\"radtemp\":" + str(radAvg) + ",\"humid\":" + str(hudAvg) + ",\"velocity\":" + str(aneMagAvg) + "}]"
+        command = "insertData [\"BBW281\", " + \
+            "{\"x\":" + str(x) + \
+            ",\"y\":" + str(y) + \
+            ",\"temp\":" + str(ambAvg) + \
+            ",\"radtemp\":" + str(radAvg) + \
+            ",\"humid\":" + str(hudAvg) + \
+            ",\"velocity\":" + str(aneMagAvg) + "}]"
         
         if x<xDim:
             x=x+1
