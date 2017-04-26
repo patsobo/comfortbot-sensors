@@ -51,10 +51,17 @@ class GoToPose():
 
 if __name__ == '__main__':
 
-    xx = #map width
-    yy = #map length
-    xgoal = xx/10
-    ygoal = yy/5
+    x1 = -.272
+    x2 = 0.37
+    x3 = 0.835
+    x4 = 1.37
+
+    y1 = 1.07
+    y2 = 0.63
+    y2 = 0.30
+    y3 = -0.12
+    xgoal = x1
+    ygoal = y1
     try:
         rospy.init_node('nav_test', anonymous=False)
         navigator = GoToPose()
@@ -76,9 +83,21 @@ if __name__ == '__main__':
 
     except rospy.ROSInterruptException:
         rospy.loginfo("Ctrl-C caught. Quitting")
-
-    if xgoal < (xx - xx/10):
-        xgoal = xgoal + xx/10
-    else:
-        xgoal = xx/10
-        ygoal = ygoal + yy/5
+    if xgoal = x1:
+        xgoal = x2
+    if xgoal = x2:
+        xgoal = x3
+    if xgoal = x3:
+        xgoal = x4
+    if xgoal = x4 && ygoal = y1:
+        xgoal = x1
+        ygoal = y2
+    if xgoal = x4 && ygoal = y2:
+        xgoal = x1
+        ygoal = y3
+    if xgoal = x4 && ygoal = y3:
+        xgoal = x1
+        ygoal = y4
+    if xgoal = x4 && ygoal = y4:
+        break
+    
