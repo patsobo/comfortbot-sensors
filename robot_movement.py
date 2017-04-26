@@ -60,8 +60,10 @@ if __name__ == '__main__':
     y2 = 0.63
     y3 = 0.30
     y4 = -0.12
+
     xgoal = x1
     ygoal = y1
+
     try:
         rospy.init_node('nav_test', anonymous=False)
         navigator = GoToPose()
@@ -80,6 +82,8 @@ if __name__ == '__main__':
 
         # Sleep to give the last log messages time to be sent
         rospy.sleep(1)
+
+        take_measurements(x, y)
 
     except rospy.ROSInterruptException:
         rospy.loginfo("Ctrl-C caught. Quitting")
@@ -100,4 +104,3 @@ if __name__ == '__main__':
         ygoal = y4
     if xgoal == x4 and ygoal == y4:
         break
-    

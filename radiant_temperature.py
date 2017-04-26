@@ -345,7 +345,7 @@ while True:
         #to-do: send avg values to DB
         command = "insertData [\"BBW281\", " + \
             "{\"x\":" + str(x) + \
-            ",\"y\":" + str(y) + \
+            ", \"y\":" + str(y) + \
             ",\"temp\":" + str(ambAvg) + \
             ",\"radtemp\":" + str(radAvg) + \
             ",\"humid\":" + str(hudAvg) + \
