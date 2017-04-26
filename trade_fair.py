@@ -29,28 +29,28 @@ class GoToPose():
 
         self.goal_sent = False
 
-    rospy.on_shutdown(self.shutdown)
-    
-    self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
-    rospy.loginfo("Wait for the action server to come up")
+        rospy.on_shutdown(self.shutdown)
+        
+        self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
+        rospy.loginfo("Wait for the action server to come up")
 
-    self.move_base.wait_for_server(rospy.Duration(5))
+        self.move_base.wait_for_server(rospy.Duration(5))
 
     def goto(self, pos, quat):
 
         # Send a goal
         self.goal_sent = True
-    goal = MoveBaseGoal()
-    goal.target_pose.header.frame_id = 'map'
-    goal.target_pose.header.stamp = rospy.Time.now()
+        goal = MoveBaseGoal()
+        goal.target_pose.header.frame_id = 'map'
+        goal.target_pose.header.stamp = rospy.Time.now()
         goal.target_pose.pose = Pose(Point(pos['x'], pos['y'], 0.000),
                                      Quaternion(quat['r1'], quat['r2'], quat['r3'], quat['r4']))
 
-    # Start moving
+        # Start moving
         self.move_base.send_goal(goal)
 
-    # Allow TurtleBot up to 30 seconds to complete task
-    success = self.move_base.wait_for_result(rospy.Duration(30)) 
+        # Allow TurtleBot up to 30 seconds to complete task
+        success = self.move_base.wait_for_result(rospy.Duration(30)) 
 
         state = self.move_base.get_state()
         result = False
@@ -437,69 +437,69 @@ if __name__ == '__main__':
 
 
 
-    x1 = -.272
-    x2 = 0.37
-    x3 = 0.835
-    x4 = 1.37
+    x1 = -1.82
+    x2 = -1.34
+    x3 = -.955
+    x4 = -.529
 
-    y1 = 1.07
-    y2 = 0.63
-    y3 = 0.30
-    y4 = -0.12
+    y1 = .944
+    y2 = .588
+    y3 = .185
+    y4 = -.222
 
     xgoal = x1
     x = 1
     ygoal = y1
     y = 1
+    while True:
+        try:
+            rospy.init_node('nav_test', anonymous=False)
+            navigator = GoToPose()
 
-    try:
-        rospy.init_node('nav_test', anonymous=False)
-        navigator = GoToPose()
+            # Customize the following values so they are appropriate for your location
+            position = {'x': xgoal, 'y' : ygoal}
+            quaternion = {'r1' : 0.000, 'r2' : 0.000, 'r3' : 0.000, 'r4' : 1.000}
 
-        # Customize the following values so they are appropriate for your location
-        position = {'x': xgoal, 'y' : ygoal}
-        quaternion = {'r1' : 0.000, 'r2' : 0.000, 'r3' : 0.000, 'r4' : 1.000}
+            rospy.loginfo("Go to (%s, %s) pose", position['x'], position['y'])
+            success = navigator.goto(position, quaternion)
 
-        rospy.loginfo("Go to (%s, %s) pose", position['x'], position['y'])
-        success = navigator.goto(position, quaternion)
+            if success:
+                rospy.loginfo("Success")
+            else:
+                rospy.loginfo("Fail")
 
-        if success:
-            rospy.loginfo("Success")
-        else:
-            rospy.loginfo("Fail")
+            # Sleep to give the last log messages time to be sent
+            rospy.sleep(1)
 
-        # Sleep to give the last log messages time to be sent
-        rospy.sleep(1)
+            take_measurements(x, y)
 
-        take_measurements(x, y)
-
-    except rospy.ROSInterruptException:
-        rospy.loginfo("Ctrl-C caught. Quitting")
-    if xgoal == x1:
-        xgoal = x2
-        x = 2
-    if xgoal == x2:
-        xgoal = x3
-        x = 3
-    if xgoal == x3:
-        xgoal = x4
-        x = 4
-    if xgoal == x4 and ygoal == y1:
-        xgoal = x1
-        x = 1
-        ygoal = y2
-        y = 2
-    if xgoal == x4 and ygoal == y2:
-        xgoal = x1
-        x = 1
-        ygoal = y3
-        y = 3
-    if xgoal == x4 and ygoal == y3:
-        xgoal = x1
-        x = 1
-        ygoal = y4
-        y = 4
-    if xgoal == x4 and ygoal == y4:
-        break
+        except rospy.ROSInterruptException:
+            rospy.loginfo("Ctrl-C caught. Quitting")
+        if xgoal == x1:
+            xgoal = x2
+            x = 2
+        if xgoal == x2:
+            xgoal = x3
+            x = 3
+        if xgoal == x3:
+            xgoal = x4
+            x = 4
+        if xgoal == x4 and ygoal == y1:
+            xgoal = x1
+            x = 1
+            ygoal = y2
+            y = 2
+        if xgoal == x4 and ygoal == y2:
+            xgoal = x1
+            x = 1
+            ygoal = y3
+            y = 3
+        if xgoal == x4 and ygoal == y3:
+            xgoal = x1
+            x = 1
+            ygoal = y4
+            y = 4
+        if xgoal == x4 and ygoal == y4:
+            break
     # Close handle
     ljm.close(handle)
