@@ -58,8 +58,8 @@ if __name__ == '__main__':
 
     y1 = 1.07
     y2 = 0.63
-    y2 = 0.30
-    y3 = -0.12
+    y3 = 0.30
+    y4 = -0.12
     xgoal = x1
     ygoal = y1
     try:
@@ -83,21 +83,21 @@ if __name__ == '__main__':
 
     except rospy.ROSInterruptException:
         rospy.loginfo("Ctrl-C caught. Quitting")
-    if xgoal = x1:
+    if xgoal == x1:
         xgoal = x2
-    if xgoal = x2:
+    if xgoal == x2:
         xgoal = x3
-    if xgoal = x3:
+    if xgoal == x3:
         xgoal = x4
-    if xgoal = x4 && ygoal = y1:
+    if xgoal == x4 and ygoal == y1:
         xgoal = x1
         ygoal = y2
-    if xgoal = x4 && ygoal = y2:
+    if xgoal == x4 and ygoal == y2:
         xgoal = x1
         ygoal = y3
-    if xgoal = x4 && ygoal = y3:
+    if xgoal == x4 and ygoal == y3:
         xgoal = x1
         ygoal = y4
-    if xgoal = x4 && ygoal = y4:
+    if xgoal == x4 and ygoal == y4:
         break
     
